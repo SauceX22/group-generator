@@ -51,3 +51,6 @@ public class App {
 //         "group #: member1 , member2, ...
 //     }
 // }
+class Group {
+
+}
