@@ -7,7 +7,11 @@ import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        System.out.println("Hello, World!");
+        Group group1 = new Group(3, 1);
+        group1.addMember("Ahmed");
+        group1.addMember("Mohamed");
+        group1.addMember("Ali");
+        System.out.println(group1);
         // 1- read file
         // 2- Ask for method of generating groups (by group number, or by studnets per
         // group)
@@ -95,12 +99,13 @@ class Group {
         }
     }
 
-    // TODO: check the discussed formatting using String.format
     public String toString() {
-        String output = "Group #" + this.groupNumber + ": ";
+        String outputMembers = "";
         for (String member : this.members) {
-            output += member + ", ";
+            outputMembers += member + ", ";
         }
-        return output;
+        outputMembers = outputMembers.substring(0, outputMembers.length() - 2);
+
+        return String.format("Group #%02d: %s", this.groupNumber, outputMembers);
     }
 }
