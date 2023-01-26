@@ -20,6 +20,30 @@ public class App {
         // 5- Print groups in a loop, and Generate a file with output
     }
 
+    public static int askForGroupGenerationMethod(Scanner scanner) {
+        System.out.println("Please choose a method of generating groups:");
+        System.out.println("1- By number of groups");
+        System.out.println("2- By number of students per group");
+        int method = scanner.nextInt();
+        return method;
+    }
+
+    public static int[] askForGroupGenerationParameters(Scanner scanner, int method) {
+        int[] parameters = new int[2];
+        if (method == 1) {
+            System.out.println("Please enter the number of groups:");
+            parameters[0] = scanner.nextInt();
+            System.out.println("Please enter the max number of members per group:");
+            parameters[1] = scanner.nextInt();
+        } else if (method == 2) {
+            System.out.println("Please enter the number of students per group:");
+            parameters[0] = scanner.nextInt();
+            System.out.println("Please enter the max number of members per group:");
+            parameters[1] = scanner.nextInt();
+        }
+        return parameters;
+    }
+
     public static List<String> readStudentsFile(String path) {
         List<String> students = new ArrayList<String>();
         try {
