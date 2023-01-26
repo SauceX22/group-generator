@@ -1,0 +1,7 @@
+-generate groups of random members 
+
+-generate the grups according to the following input:
+    -studnet list 
+    -max number of members in a group
+
+-output the groups in a readable format, both in the console and in a text file
