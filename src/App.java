@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class App {
     public static void main(String[] args) throws Exception {
         System.out.println("Hello, World!");
@@ -43,14 +46,29 @@ public class App {
 }
 
 
-// group class {
-//     list members (using max number per group)
-
-//     toString {
-//         with printf formatting for spacing (using String.format method as return)
-//         "group #: member1 , member2, ...
-//     }
-// }
 class Group {
 
+    private List<String> members;
+    private int groupNumber;
+    private int maxMembers;
+
+    public Group(int maxMembers, int groupNumber) {
+        this.maxMembers = maxMembers;
+        this.groupNumber = groupNumber;
+        this.members = new ArrayList<String>();
+    }
+
+    public void addMember(String member) {
+        if (this.members.size() < this.maxMembers) {
+            this.members.add(member);
+        }
+    }
+
+    public String toString() {
+        String output = "Group #" + this.groupNumber + ": ";
+        for (String member : this.members) {
+            output += member + ", ";
+        }
+        return output;
+    }
 }
