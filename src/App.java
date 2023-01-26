@@ -37,12 +37,7 @@ public class App {
         return students;
     }
 
-    // method to create output file, with try catch
-    // takes:
-    // -path to file (same input path),
     public static void createOutputFile(List<Group> groups, String path) {
-        // create output text file using the group list tostring method, and output to
-        // the file at the path
         try {
             File file = new File(path);
             PrintWriter writer = new PrintWriter(file);
@@ -56,11 +51,12 @@ public class App {
         }
     }
 
-    // method to pick a student from given list, and remove him from the list:
-    // takes:
-    // -list
-    // returns:
-    // -picked student
+    public static String pickRandomStudent(List<String> students) {
+        int randomIndex = (int) (Math.random() * students.size());
+        String pickedStudent = students.get(randomIndex);
+        students.remove(randomIndex);
+        return pickedStudent;
+    }
 
     // method to distribute students accross groups (according to nubmer of groups),
     // takes:
