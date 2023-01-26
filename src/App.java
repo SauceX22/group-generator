@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -26,7 +27,7 @@ public class App {
             }
             scanner.close();
         } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
+            System.out.println("An error occurred, Couldn't create file.");
             e.printStackTrace();
         }
         return students;
@@ -35,6 +36,21 @@ public class App {
     // method to create output file, with try catch
     // takes:
     // -path to file (same input path),
+    public static void createOutputFile(List<Group> groups, String path) {
+        // create output text file using the group list tostring method, and output to
+        // the file at the path
+        try {
+            File file = new File(path);
+            PrintWriter writer = new PrintWriter(file);
+            for (Group group : groups) {
+                writer.println(group.toString());
+            }
+            writer.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred, Couldn't create file.");
+            e.printStackTrace();
+        }
+    }
 
     // method to pick a student from given list, and remove him from the list:
     // takes:
@@ -79,6 +95,7 @@ class Group {
         }
     }
 
+    // TODO: check the discussed formatting using String.format
     public String toString() {
         String output = "Group #" + this.groupNumber + ": ";
         for (String member : this.members) {
