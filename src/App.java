@@ -7,17 +7,31 @@ import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        Group group1 = new Group(3, 1);
-        group1.addMember("Ahmed");
-        group1.addMember("Mohamed");
-        group1.addMember("Ali");
-        System.out.println(group1);
-        // 1- read file
-        // 2- Ask for method of generating groups (by group number, or by studnets per
-        // group)
+        Scanner scanner = new Scanner(System.in);
+
+        // 1- read file of path lib/Studnet List.txt and store in a list
+        List<String> students = readStudentsFile("lib/Student List.txt");
+        // 2- Ask user for method of generating groups (by group number, or by studnets
+        // per group)
+        int methodOfChoice = askForGroupGenerationMethod(scanner);
+
         // 3- Ask for parameters according to choice of method
-        // 4- Generate according to parameters
+        int[] parameters = askForGroupGenerationParameters(scanner, methodOfChoice);
+
+        // 4- Check type of choice and Generate according to parameters
+        List<Group> groups = new ArrayList<Group>();
+        if (methodOfChoice == 1) {
+            // groups = distributeStudentsByGroupNumber(students, parameters[0],
+            // parameters[1]);
+        } else if (methodOfChoice == 2) {
+            // groups = distributeStudentsByStudentsPerGroup(students, parameters[0],
+            // parameters[1]);
+        }
         // 5- Print groups in a loop, and Generate a file with output
+        createOutputFile(groups, "lib/Output.txt");
+        for (Group group : groups) {
+            System.out.println(group.toString());
+        }
     }
 
     public static int askForGroupGenerationMethod(Scanner scanner) {
