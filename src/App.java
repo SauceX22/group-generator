@@ -10,27 +10,25 @@ public class App {
         Scanner scanner = new Scanner(System.in);
 
         // 1- read file of path lib/Studnet List.txt and store in a list
-        List<String> students = readStudentsFile("lib/Student List.txt");
+        List<String> students = readStudentsFile("Student List.txt");
         // 2- Ask user for method of generating groups (by group number, or by studnets
         // per group)
         int methodOfChoice = askForGroupGenerationMethod(scanner);
 
         // 3- Ask for parameters according to choice of method
-        int[] parameters = askForGroupGenerationParameters(scanner, methodOfChoice);
+        int parameter = askForGroupGenerationParameters(scanner, methodOfChoice);
 
         // 4- Check type of choice and Generate according to parameters
         List<Group> groups = new ArrayList<Group>();
         if (methodOfChoice == 1) {
-            // groups = distributeStudentsByGroupNumber(students, parameters[0],
-            // parameters[1]);
+            groups = distributeViaGroups(students, parameter);
         } else if (methodOfChoice == 2) {
-            // groups = distributeStudentsByStudentsPerGroup(students, parameters[0],
-            // parameters[1]);
+            groups = distributeViaMembers(students, parameter);
         }
         // 5- Print groups in a loop, and Generate a file with output
-        createOutputFile(groups, "lib/Output.txt");
+        createOutputFile(groups, "Output.txt");
         for (Group group : groups) {
-            System.out.println(group.toString());
+            System.out.println(group);
         }
     }
 
@@ -42,20 +40,16 @@ public class App {
         return method;
     }
 
-    public static int[] askForGroupGenerationParameters(Scanner scanner, int method) {
-        int[] parameters = new int[2];
+    public static int askForGroupGenerationParameters(Scanner scanner, int method) {
         if (method == 1) {
             System.out.println("Please enter the number of groups:");
-            parameters[0] = scanner.nextInt();
-            System.out.println("Please enter the max number of members per group:");
-            parameters[1] = scanner.nextInt();
+            // int output = scanner.nextInt();
         } else if (method == 2) {
             System.out.println("Please enter the number of students per group:");
-            parameters[0] = scanner.nextInt();
-            System.out.println("Please enter the max number of members per group:");
-            parameters[1] = scanner.nextInt();
+            // int output = scanner.nextInt();
         }
-        return parameters;
+        int output = scanner.nextInt();
+        return output;
     }
 
     public static List<String> readStudentsFile(String path) {
@@ -91,46 +85,55 @@ public class App {
 
     public static String pickRandomStudent(List<String> students) {
         int randomIndex = (int) (Math.random() * students.size());
+        // System.out.println(randomIndex); /////
         String pickedStudent = students.get(randomIndex);
         students.remove(randomIndex);
         return pickedStudent;
     }
 
-    // method to distribute students accross groups (according to nubmer of groups),
-    // takes:
-    // -list of students,
-    // -number of groups,
-    // -max number of studnets per group,
-    // returns:
-    // -list of group objects
+    // * This method distributes students
+    public static List<Group> distributeViaGroups(List<String> students, int numOfGroups) {
+        List<Group> groups = new ArrayList<Group>();
+        for (int i = 0; i < numOfGroups; i++) {
+            groups.add(i, new Group(i + 1));
+        }
+        for (int i = 0; students.size() > 0; i++) {
+            String student = pickRandomStudent(students);
+            groups.get(i % numOfGroups).addMember(student);
+        }
+        return groups;
+    }
 
-    // method to distribute students accross groups (according to nubmer of studetns
-    // per group),
-    // takes:
-    // -list of students,
-    // -nubmer of studetns per group,
-    // -max number of studnets per group,
-    // returns:
-    // -list of group objects
-
+    // * This method fills each group until it reaches the max students
+    public static List<Group> distributeViaMembers(List<String> students, int stuPerGroup) {
+        List<Group> groups = new ArrayList<Group>();
+        for (int iGroup = 0; students.size() > 0; iGroup++) {
+            groups.add(iGroup, new Group(iGroup + 1));
+            for (int iStudent = 0; (iStudent < stuPerGroup) && (students.size() > 0); iStudent++) { // Fills the
+                                                                                                    // required amount
+                                                                                                    // of students in
+                                                                                                    // Groups
+                                                                                                    // respectively
+                String student = pickRandomStudent(students);
+                groups.get(iGroup).addMember(student);
+            }
+        }
+        return groups;
+    }
 }
 
 class Group {
 
     private List<String> members;
     private int groupNumber;
-    private int maxMembers;
 
-    public Group(int maxMembers, int groupNumber) {
-        this.maxMembers = maxMembers;
+    public Group(int groupNumber) {
         this.groupNumber = groupNumber;
         this.members = new ArrayList<String>();
     }
 
     public void addMember(String member) {
-        if (this.members.size() < this.maxMembers) {
-            this.members.add(member);
-        }
+        this.members.add(member);
     }
 
     public String toString() {
