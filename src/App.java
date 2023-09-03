@@ -21,9 +21,9 @@ public class App {
         // 4- Check type of choice and Generate according to parameters
         List<Group> groups = new ArrayList<Group>();
         if (methodOfChoice == 1) {
-            // groups = distributeViaGroups(students, parameter);
+            groups = distributeViaGroups(students, parameter);
         } else if (methodOfChoice == 2) {
-            // groups = distributeViaMembers(students, parameter);
+            groups = distributeViaMembers(students, parameter);
         }
         // 5- Print groups in a loop, and Generate a file with output
         createOutputFile(groups, "Output.txt");
@@ -82,7 +82,43 @@ public class App {
             e.printStackTrace();
         }
     }
+ public static String pickRandomStudent(List<String> students) {
+        int randomIndex = (int) (Math.random() * students.size());
+        // System.out.println(randomIndex); /////
+        String pickedStudent = students.get(randomIndex);
+        students.remove(randomIndex);
+        return pickedStudent;
+    }
 
+    // * This method distributes students
+    public static List<Group> distributeViaGroups(List<String> students, int numOfGroups) {
+        List<Group> groups = new ArrayList<Group>();
+        for (int i = 0; i < numOfGroups; i++) {
+            groups.add(i, new Group(i + 1));
+        }
+        for (int i = 0; students.size() > 0; i++) {
+            String student = pickRandomStudent(students);
+            groups.get(i % numOfGroups).addMember(student);
+        }
+        return groups;
+    }
+
+    // * This method fills each group until it reaches the max students
+    public static List<Group> distributeViaMembers(List<String> students, int stuPerGroup) {
+        List<Group> groups = new ArrayList<Group>();
+        for (int iGroup = 0; students.size() > 0; iGroup++) {
+            groups.add(iGroup, new Group(iGroup + 1));
+            for (int iStudent = 0; (iStudent < stuPerGroup) && (students.size() > 0); iStudent++) { // Fills the
+                                                                                                    // required amount
+                                                                                                    // of students in
+                                                                                                    // Groups
+                                                                                                    // respectively
+                String student = pickRandomStudent(students);
+                groups.get(iGroup).addMember(student);
+            }
+        }
+        return groups;
+    }
 }
 
 class Group {
