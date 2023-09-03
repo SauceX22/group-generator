@@ -82,7 +82,8 @@ public class App {
             e.printStackTrace();
         }
     }
- public static String pickRandomStudent(List<String> students) {
+
+    public static String pickRandomStudent(List<String> students) {
         int randomIndex = (int) (Math.random() * students.size());
         // System.out.println(randomIndex); /////
         String pickedStudent = students.get(randomIndex);
